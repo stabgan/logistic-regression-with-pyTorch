@@ -1,59 +1,31 @@
-# 🔢 Logistic Regression with PyTorch
+# Logistic Regression
 
-A clean implementation of logistic regression using PyTorch, trained and evaluated on the MNIST handwritten digit dataset. The model classifies 28×28 grayscale digit images into 10 classes (0–9).
+### Logistic regression predicts the probability of an outcome that can only have two values (i.e. a dichotomy). The prediction is based on the use of one or several predictors (numerical and categorical). A linear regression is not appropriate for predicting the value of a binary variable for two reasons:		
+- A linear regression will predict values outside the acceptable range (e.g. predicting probabilities
+outside the range 0 to 1)
+- Since the dichotomous experiments can only have one of two possible values for each experiment, the residuals will not be normally distributed about the predicted line.
+### On the other hand, a logistic regression produces a logistic curve, which is limited to values between 0 and 1. Logistic regression is similar to a linear regression, but the curve is constructed using the natural logarithm of the “odds” of the target variable, rather than the probability. Moreover, the predictors do not have to be normally distributed or have equal variance in each group.		
+![](http://www.saedsayad.com/images/LogReg_1.png)
 
-## 📖 Description
+In the logistic regression the constant (b0) moves the curve left and right and the slope (b1) defines the steepness of the curve. By simple transformation, the logistic regression equation can be written in terms of an odds ratio.
+![](http://www.saedsayad.com/images/Logistic_odd.png)
+		
+Finally, taking the natural log of both sides, we can write the equation in terms of log-odds (logit) which is a linear function of the predictors. The coefficient (b1) is the amount the logit (log-odds) changes with a one unit change in x. 
+![](http://www.saedsayad.com/images/Logit.png)
 
-This project demonstrates how to build a simple logistic regression classifier from scratch using PyTorch's `nn.Module`. It covers the full pipeline: loading data, defining a model, training with SGD, and evaluating accuracy on a held-out test set. A great starting point for learning PyTorch fundamentals.
+As mentioned before, logistic regression can handle any number of numerical and/or categorical variables.
+![](http://www.saedsayad.com/images/LogReg_eq.png)
 
-## 🛠️ Tech Stack
+There are several analogies between linear regression and logistic regression. Just as ordinary least square regression is the method used to estimate coefficients for the best fit line in linear regression, logistic regression uses maximum likelihood estimation (MLE) to obtain the model coefficients that relate predictors to the target. After this initial function is estimated, the process is repeated until LL (Log Likelihood) does not change significantly. 	
 
-| Tool | Purpose |
-|------|---------|
-| 🐍 Python 3 | Programming language |
-| 🔥 PyTorch | Deep learning framework |
-| 🖼️ torchvision | MNIST dataset & transforms |
+![](http://www.saedsayad.com/images/LogReg_mle.png)
 
-## 📦 Dependencies
+--------------------------------------------------------------------------------------------------------------------
 
-- `torch`
-- `torchvision`
+#### Here I used my model in the MNIST dataset .
 
-Install with:
+I previously applied logistic regression in scikit learn , but doing it in pyTorch let me explore much more.
 
-```bash
-pip install torch torchvision
-```
+The Accuraacy of my project is :
 
-## 🚀 How to Run
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/stabgan/logistic-regression-with-pyTorch.git
-cd logistic-regression-with-pyTorch
-```
-
-2. Install dependencies:
-
-```bash
-pip install torch torchvision
-```
-
-3. Run the training script:
-
-```bash
-python logistic-regression.py
-```
-
-The script will automatically download the MNIST dataset on first run. Training progress (loss and accuracy) is printed every 1000 iterations. GPU is used automatically if available.
-
-## ⚠️ Known Issues
-
-- The MNIST images referenced in the original README (from `saedsayad.com` and `ibb.co`) are external links and may break over time.
-- No model checkpointing — the trained model is not saved to disk.
-- No command-line arguments for hyperparameters (batch size, learning rate, epochs are hardcoded).
-
-## 📄 License
-
-See [LICENSE](LICENSE) for details.
+![](https://image.ibb.co/nnc7fn/Screen_Shot_2018_02_15_at_9_20_01_PM.png)

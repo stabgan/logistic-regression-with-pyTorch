@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
 import torchvision.datasets as dsets
+from torch.autograd import Variable
 
 '''
 STEP 1: LOADING DATASET
@@ -86,11 +87,11 @@ for epoch in range(num_epochs):
         #  USE GPU FOR MODEL  #
         #######################
         if torch.cuda.is_available():
-            images = images.view(-1, 28*28).cuda()
-            labels = labels.cuda()
+            images = Variable(images.view(-1, 28*28).cuda())
+            labels = Variable(labels.cuda())
         else:
-            images = images.view(-1, 28*28)
-            labels = labels
+            images = Variable(images.view(-1, 28*28))
+            labels = Variable(labels)
         
         # Clear gradients w.r.t. parameters
         optimizer.zero_grad()
@@ -118,10 +119,7 @@ for epoch in range(num_epochs):
                 #######################
                 #  USE GPU FOR MODEL  #
                 #######################
-                if torch.cuda.is_available():
-                    images = images.view(-1, 28*28).cuda()
-                else:
-                    images = images.view(-1, 28*28)
+                images = Variable(images.view(-1, 28*28).cuda())
                 
                 # Forward pass only to get logits/output
                 outputs = model(images)
@@ -141,4 +139,4 @@ for epoch in range(num_epochs):
             accuracy = 100 * correct / total
             
             # Print Loss
-            print('Iteration: {}. Loss: {}. Accuracy: {}'.format(iter, loss.item(), accuracy))
+            print('Iteration: {}. Loss: {}. Accuracy: {}'.format(iter, loss.data[0], accuracy))
