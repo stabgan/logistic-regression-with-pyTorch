@@ -1,31 +1,51 @@
-# Logistic Regression
+# Logistic Regression with PyTorch
 
-### Logistic regression predicts the probability of an outcome that can only have two values (i.e. a dichotomy). The prediction is based on the use of one or several predictors (numerical and categorical). A linear regression is not appropriate for predicting the value of a binary variable for two reasons:		
-- A linear regression will predict values outside the acceptable range (e.g. predicting probabilities
-outside the range 0 to 1)
-- Since the dichotomous experiments can only have one of two possible values for each experiment, the residuals will not be normally distributed about the predicted line.
-### On the other hand, a logistic regression produces a logistic curve, which is limited to values between 0 and 1. Logistic regression is similar to a linear regression, but the curve is constructed using the natural logarithm of the “odds” of the target variable, rather than the probability. Moreover, the predictors do not have to be normally distributed or have equal variance in each group.		
-![](http://www.saedsayad.com/images/LogReg_1.png)
+Multiclass logistic regression trained on the MNIST handwritten-digit dataset using PyTorch.
 
-In the logistic regression the constant (b0) moves the curve left and right and the slope (b1) defines the steepness of the curve. By simple transformation, the logistic regression equation can be written in terms of an odds ratio.
-![](http://www.saedsayad.com/images/Logistic_odd.png)
-		
-Finally, taking the natural log of both sides, we can write the equation in terms of log-odds (logit) which is a linear function of the predictors. The coefficient (b1) is the amount the logit (log-odds) changes with a one unit change in x. 
-![](http://www.saedsayad.com/images/Logit.png)
+## What It Does
 
-As mentioned before, logistic regression can handle any number of numerical and/or categorical variables.
-![](http://www.saedsayad.com/images/LogReg_eq.png)
+Trains a single fully-connected layer (`nn.Linear`) to classify 28×28 grayscale digit images into 10 classes (0–9). Despite its simplicity, the model reaches ~82 % test accuracy after 30 000 gradient steps, making it a clean baseline before moving to deeper architectures.
 
-There are several analogies between linear regression and logistic regression. Just as ordinary least square regression is the method used to estimate coefficients for the best fit line in linear regression, logistic regression uses maximum likelihood estimation (MLE) to obtain the model coefficients that relate predictors to the target. After this initial function is estimated, the process is repeated until LL (Log Likelihood) does not change significantly. 	
+## Architecture
 
-![](http://www.saedsayad.com/images/LogReg_mle.png)
+```
+Input (784) ──▶ Linear (784 → 10) ──▶ CrossEntropyLoss
+```
 
---------------------------------------------------------------------------------------------------------------------
+- Flattened 28×28 images → 784-dim input
+- Single linear layer → 10 logits
+- SGD optimizer, learning rate 1e-4, batch size 80
 
-#### Here I used my model in the MNIST dataset .
+## Dataset
 
-I previously applied logistic regression in scikit learn , but doing it in pyTorch let me explore much more.
+[MNIST](http://yann.lecun.com/exdb/mnist/) — 60 000 training / 10 000 test images of handwritten digits. Downloaded automatically by `torchvision` on first run.
 
-The Accuraacy of my project is :
+## 🛠 Tech Stack
 
-![](https://image.ibb.co/nnc7fn/Screen_Shot_2018_02_15_at_9_20_01_PM.png)
+| Tool | Purpose |
+|------|---------|
+| 🐍 Python 3.8+ | Language |
+| 🔥 PyTorch | Model, training loop, autograd |
+| 🖼 torchvision | MNIST dataset & transforms |
+
+## Getting Started
+
+```bash
+# Install dependencies
+pip install torch torchvision
+
+# Train the model
+python logistic-regression.py
+```
+
+Training logs print every 1 000 steps with current loss and test accuracy. A CUDA GPU is used automatically when available.
+
+## ⚠️ Known Issues
+
+- No learning-rate scheduler — accuracy plateaus with longer training.
+- No data augmentation (not typical for logistic regression, but limits ceiling).
+- Model checkpoint saving is not implemented.
+
+## License
+
+MIT
